@@ -19,10 +19,10 @@ const tasks = [
 ];
 
 for (let tsk of tasks) {
-  addTask(tsk.id, tsk.text)
+  creatTask(tsk.id, tsk.text)
 }
 
-function addTask(idTask, textTask) {
+function creatTask(idTask, textTask) {
   let tasksList = document.querySelector('.tasks-list');
 
   let divTaskItem = document.createElement('div');
@@ -66,3 +66,13 @@ function addTask(idTask, textTask) {
   divTaskItem.prepend(divTaskItemMainContent);
   tasksList.append(divTaskItem);
 }
+
+const myForm = document.querySelector('.create-task-block');
+myForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const textTask = event.target.elements.taskName.value;
+  const idTask = Date.now();
+  tasks.push({id: `${idTask}`, completed: false, text: textTask})
+  console.log(tasks);
+  creatTask(idTask, textTask);
+})
