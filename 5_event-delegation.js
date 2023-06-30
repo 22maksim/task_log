@@ -68,11 +68,42 @@ function creatTask(idTask, textTask) {
 }
 
 const myForm = document.querySelector('.create-task-block');
+
 myForm.addEventListener('submit', (event) => {
   event.preventDefault();
-  const textTask = event.target.elements.taskName.value;
+  let textTask = event.target.elements.taskName.value;
   const idTask = Date.now();
-  tasks.push({id: `${idTask}`, completed: false, text: textTask})
-  console.log(tasks);
-  creatTask(idTask, textTask);
+  textTask = textTask.toLowerCase().trim();
+
+  const blockError = document.querySelector('.error-message-block');
+  if (myForm.contains(blockError)) {
+    myForm.removeChild(blockError);
+  }
+
+  if (!textTask) {
+    creatError('Название задачи не должно быть пустым');
+  } else if (checkingCopyOfTasks(textTask) === false) {
+    tasks.push({id: `${idTask}`, completed: false, text: textTask})
+    creatTask(idTask, textTask)
+  } else if (checkingCopyOfTasks(textTask)) {
+    creatError('Задача с таким названием уже существует.');
+  }
 })
+
+function creatError(infoText) {
+  const spanTeg = document.createElement('span');
+  spanTeg.innerText = infoText;
+  const blockError = document.createElement('div');
+  blockError.classList.add('error-message-block');
+  blockError.prepend(spanTeg);
+  myForm.append(blockError);
+}
+
+function checkingCopyOfTasks(test) {
+  const arrayText = tasks.map((item) => {
+    return item.text;
+  })
+  return arrayText.some((item) => {
+    return item.toLowerCase().trim() === test;
+  })
+}
