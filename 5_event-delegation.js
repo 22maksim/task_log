@@ -107,3 +107,56 @@ function checkingCopyOfTasks(test) {
     return item.toLowerCase().trim() === test;
   })
 }
+
+//------------modal-------------
+
+const modalOverlay = document.createElement('div');
+modalOverlay.classList.add('modal-overlay', 'modal-overlay_hidden');
+const deleteModal = document.createElement('div');
+deleteModal.classList.add('delete-modal');
+modalOverlay.prepend(deleteModal)
+const deleteModalH3 = document.createElement('h3');
+deleteModalH3.classList.add('delete-modal__question');
+deleteModalH3.textContent = 'Вы действительно хотите удалить эту задачу?';
+deleteModal.prepend(deleteModalH3);
+const deleteModalButtons = document.createElement('div');
+deleteModalButtons.classList.add('delete-modal__buttons');
+deleteModal.append(deleteModalButtons);
+const deleteModalButtonCancel = document.createElement('button');
+deleteModalButtonCancel.classList.add('delete-modal__button', 'delete-modal__cancel-button');
+deleteModalButtonCancel.textContent = 'Отмена';
+deleteModalButtons.prepend(deleteModalButtonCancel)
+const deleteModalButtonConfirm = document.createElement('button');
+deleteModalButtonConfirm.classList.add('delete-modal__button', 'delete-modal__confirm-button');
+deleteModalButtonConfirm.textContent = 'Удалить';
+deleteModalButtons.append(deleteModalButtonConfirm);
+document.body.append(modalOverlay)
+
+//------------delete--button--modal--------------
+
+const tasksList = document.querySelector('.tasks-list');
+tasksList.addEventListener('click', (event) => {
+  const htmlChild = event.target.closest('button');
+  const taskDelete = event.target.closest('.task-item');
+  const taskDeleteId = taskDelete.dataset.taskId;
+  
+  if (htmlChild) {
+    modalOverlay.classList.remove('modal-overlay_hidden');
+  }
+
+  modalOverlay.addEventListener('click', deleyten = (event) => {
+    const clickOnCancel = event.target.closest('.delete-modal__cancel-button');
+    const clickOnConfirm = event.target.closest('.delete-modal__confirm-button');
+    if (clickOnCancel) {
+      modalOverlay.classList.add('modal-overlay_hidden');
+    }
+    if (clickOnConfirm) {
+      modalOverlay.classList.add('modal-overlay_hidden');
+      tasksList.removeChild(taskDelete);
+      tasks.forEach((item, index) => {
+        if (item.id === taskDeleteId) tasks.splice(index, 1);
+      });
+    }
+    modalOverlay.removeEventListener('click', deleyten);
+  })
+})
