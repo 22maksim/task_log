@@ -1,5 +1,4 @@
 
-
 const tasks = [
   {
       id: '1138465078061',
@@ -88,6 +87,7 @@ myForm.addEventListener('submit', (event) => {
   } else if (checkingCopyOfTasks(textTask)) {
     creatError('Задача с таким названием уже существует.');
   }
+  swithTheme(themeOn);
 })
 
 function creatError(infoText) {
@@ -132,7 +132,7 @@ deleteModalButtonConfirm.textContent = 'Удалить';
 deleteModalButtons.append(deleteModalButtonConfirm);
 document.body.append(modalOverlay)
 
-//------------delete--button--modal--------------
+//----------add--delete--event--modal--------------
 
 const tasksList = document.querySelector('.tasks-list');
 tasksList.addEventListener('click', (event) => {
@@ -144,7 +144,7 @@ tasksList.addEventListener('click', (event) => {
     modalOverlay.classList.remove('modal-overlay_hidden');
   }
 
-  modalOverlay.addEventListener('click', deleyten = (event) => {
+  modalOverlay.addEventListener('click', function deleyten(event) {
     const clickOnCancel = event.target.closest('.delete-modal__cancel-button');
     const clickOnConfirm = event.target.closest('.delete-modal__confirm-button');
     if (clickOnCancel) {
@@ -160,3 +160,40 @@ tasksList.addEventListener('click', (event) => {
     modalOverlay.removeEventListener('click', deleyten);
   })
 })
+
+//--------------dark--light--theme---------------
+let themeOn = 0;
+
+document.body.addEventListener('keydown', function(event) {
+  if (event.key === 'Tab') {
+    if (themeOn === 0) {
+      themeOn = 1;
+      swithTheme(themeOn);
+    } else {
+      themeOn = 0;
+      swithTheme(themeOn);
+    }
+  }
+})
+
+const swithTheme = (themeOn) => {
+  const taskItem = document.querySelectorAll('.task-item');
+  const buttonAll = document.querySelectorAll('button');
+  if (themeOn === 1) {
+    document.body.style.background = '#24292E';
+    taskItem.forEach((item) => {
+      item.style.color = '#ffffff';
+    });
+    buttonAll.forEach((item) => {
+      item.style.border = '1px solid #ffffff';
+    });
+  } else {
+    document.body.style.background = 'initial';
+    taskItem.forEach((item) => {
+      item.style.color = 'initial';
+    });
+    buttonAll.forEach((item) => {
+      item.style.border = 'none';
+    });
+  }
+}
